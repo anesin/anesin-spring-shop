@@ -11,8 +11,6 @@ import org.springframework.test.context.TestPropertySource;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 
 @SpringBootTest
 @TestPropertySource(locations = "classpath:application-test.properties")
@@ -40,7 +38,7 @@ class ItemRepositoryTest {
 
 
   public void createItemList() {
-    for (int i = 0; i <= 10; ++i) {
+    for (int i = 0; i < 10; ++i) {
       Item item = new Item();
       item.setItemNm("test product" + i);
       item.setPrice(10000 + i);
@@ -91,6 +89,26 @@ class ItemRepositoryTest {
   public void findByPriceLessThanOrderByPriceDescTest() {
     createItemList();
     List<Item> itemList = itemRepository.findByPriceLessThanOrderByPriceDesc(10005);
+    for (Item item : itemList)
+      System.out.println(item);
+  }
+
+
+  @Test
+  @DisplayName("@Query를 이용한 상품 조회 테스트")
+  public void findByItemDetailTest() {
+    createItemList();
+    List<Item> itemList = itemRepository.findByItemDetail("test item detail");
+    for (Item item : itemList)
+      System.out.println(item);
+  }
+
+
+  @Test
+  @DisplayName("nativeQuery 속성을 이용한 상품 조회 테스트")
+  public void findByItemDetailByNativeTest() {
+    createItemList();
+    List<Item> itemList = itemRepository.findByItemDetailByNative("test item detail");
     for (Item item : itemList)
       System.out.println(item);
   }
